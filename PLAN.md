@@ -16,16 +16,17 @@ Diferenciador: solo mostramos ofertas con match real (calidad > cantidad).
   - Selección de zona (regiones de Chile) + vista del perfil extraído
   - Pendiente: pegar `ANTHROPIC_API_KEY` para activar el análisis
 
-- [ ] **Fase 2 — Ingesta de ofertas (Chile)**
-  - Validar y conectar fuente (Jooble / SerpApi / BNE) tras pequeña investigación
-  - Interfaz `JobProvider` intercambiable + deduplicación en `jobs`
+- [~] **Fase 2 — Ingesta de ofertas (Chile)**
+  - Ofertas de ejemplo cargadas (12, varias regiones/rubros) para demo
+  - Pendiente: conectar fuente real (Jooble / SerpApi / BNE) tras investigación
 
-- [ ] **Fase 3 — Matching**
-  - Embeddings (Voyage AI, multilingüe) + búsqueda vectorial pgvector
-  - Re-ranking y scoring con Claude → `matches` (score + porqué + skills)
+- [x] **Fase 3 — Matching (sin IA, sin tokens)**
+  - Motor propio: compara competencias del CV con el texto de la oferta
+  - Score 0-100 + bonus por zona + umbral de calidad → `matches`
+  - Opcional futuro: embeddings (Voyage) + re-ranking con Claude
 
-- [ ] **Fase 4 — Dashboard CRM**
-  - Tabla con columnas: empresa, ubicación, cargo, % match, fecha, link, estado
+- [x] **Fase 4 — Dashboard CRM**
+  - Tabla con columnas: empresa, cargo, ubicación, % match, estado, link
   - Filtros y estados (nueva / guardada / postulada / descartada)
 
 - [ ] **Fase 5 — Consejos + carta de presentación**

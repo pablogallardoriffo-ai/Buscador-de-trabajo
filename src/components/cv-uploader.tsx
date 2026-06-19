@@ -78,6 +78,10 @@ export function CvUploader({ defaultRegion }: { defaultRegion?: string | null })
         throw new Error(body.error ?? "No se pudo analizar el CV");
       }
 
+      // Calcula las ofertas con match (sin IA).
+      await fetch("/api/match", { method: "POST" });
+
+      router.push("/app");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Algo salió mal.");
