@@ -10,10 +10,11 @@ Diferenciador: solo mostramos ofertas con match real (calidad > cantidad).
   - Supabase: esquema completo + RLS + Storage privado para CVs
   - Auth por enlace mágico, rutas protegidas, armazón del panel
 
-- [ ] **Fase 1 — Subir CV + análisis IA**
+- [x] **Fase 1 — Subir CV + análisis IA**
   - Subida de PDF a Storage
-  - Claude extrae competencias, estudios, experiencia, idiomas → `cv_data`
-  - Vista de perfil editable y selección de zona
+  - Claude (Haiku 4.5) extrae competencias, estudios, experiencia, idiomas → `cv_data`
+  - Selección de zona (regiones de Chile) + vista del perfil extraído
+  - Pendiente: pegar `ANTHROPIC_API_KEY` para activar el análisis
 
 - [ ] **Fase 2 — Ingesta de ofertas (Chile)**
   - Validar y conectar fuente (Jooble / SerpApi / BNE) tras pequeña investigación
