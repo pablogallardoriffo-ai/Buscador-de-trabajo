@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/*
+  Es Sencillo — sistema de diseño
+  Paleta sobria tipo CRM: neutros cálidos + verde salvia/teal que relaja.
+  Sin saturar: el foco siempre en una acción clara.
+*/
+:root {
+  --background: #f6f5f1; /* off-white cálido */
+  --foreground: #2b2f2d; /* gris pizarra suave */
+
+  --card: #ffffff;
+  --card-foreground: #2b2f2d;
+
+  --muted: #eceee9;
+  --muted-foreground: #6b716c;
+
+  --primary: #3f7d6e; /* verde salvia / teal */
+  --primary-foreground: #ffffff;
+  --primary-soft: #e6efeb;
+
+  --accent: #c98a3a; /* ámbar cálido para acentos/medio */
+  --accent-foreground: #ffffff;
+
+  --success: #4f8a5b;
+  --warning: #c98a3a;
+  --danger: #b4573f;
+
+  --border: #e2e4df;
+  --input: #e2e4df;
+  --ring: #3f7d6e;
+
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 0.25rem);
+  --radius-sm: calc(var(--radius) - 0.4rem);
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
