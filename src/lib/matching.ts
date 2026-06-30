@@ -2,14 +2,7 @@
  * Motor de match entre el CV y las ofertas — SIN IA, sin consumo de tokens.
  * Compara las competencias detectadas en el CV con el texto de cada oferta.
  */
-
-/** Minúsculas y sin tildes, para comparar de forma robusta. */
-function normalize(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
-}
+import { normalize } from "./text";
 
 export interface JobLike {
   title: string | null;

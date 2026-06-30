@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
+import { extractText, getDocumentProxy } from "unpdf";
 import { createClient } from "@/lib/supabase/server";
 import { parseCvPdf } from "@/lib/anthropic";
+import { parseCvText } from "@/lib/cv-parser";
 
 export const maxDuration = 60;
 
-/** Analiza con IA el CV indicado y guarda los datos extraídos. */
+/**
+ * Analiza el CV indicado y guarda los datos extraídos.
+ * Usa IA (Claude) si hay una API key configurada; si no, usa el lector
+ * por palabras clave (gratuito, sin tokens) como alternativa automática.
+ */
 export async function POST(request: Request) {
   const supabase = await createClient();
   const {
@@ -42,10 +48,10 @@ export async function POST(request: Request) {
       throw new Error("No se pudo descargar el PDF");
     }
     const buffer = Buffer.from(await file.arrayBuffer());
-    const base64 = buffer.toString("base64");
 
-    // Analiza con la IA.
-    const parsed = await parseCvPdf(base64);
+    const parsed = process.env.ANTHROPIC_API_KEY
+      ? await parseCvPdf(buffer.toString("base64"))
+      : await parseCvWithoutAi(buffer);
 
     // Reemplaza datos previos de este CV y guarda los nuevos.
     await supabase.from("cv_data").delete().eq("cv_id", cv.id);
@@ -83,4 +89,11 @@ export async function POST(request: Request) {
       .eq("id", cv.id);
     return NextResponse.json({ error: friendly }, { status: 500 });
   }
+}
+
+/** Extrae el texto del PDF y aplica el lector por palabras clave. */
+async function parseCvWithoutAi(buffer: Buffer) {
+  const pdf = await getDocumentProxy(new Uint8Array(buffer));
+  const { text } = await extractText(pdf, { mergePages: true });
+  return parseCvText(text);
 }
