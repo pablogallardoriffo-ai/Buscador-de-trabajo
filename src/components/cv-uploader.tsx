@@ -129,7 +129,7 @@ export function CvUploader({ defaultRegion }: { defaultRegion?: string | null })
         {busy ? (
           <>
             <Loader2 className="animate-spin" size={18} />
-            {status === "uploading" ? "Subiendo CV…" : "La IA está leyendo tu CV…"}
+            {status === "uploading" ? "Subiendo CV…" : "Leyendo tu CV…"}
           </>
         ) : (
           <>

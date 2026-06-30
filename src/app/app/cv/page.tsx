@@ -39,7 +39,7 @@ export default async function CvPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Mi CV</h1>
         <p className="text-sm text-muted-foreground">
-          Sube tu CV en PDF y la IA detectará tus competencias y experiencia.
+          Sube tu CV en PDF y detectaremos tus competencias y experiencia.
         </p>
       </div>
 

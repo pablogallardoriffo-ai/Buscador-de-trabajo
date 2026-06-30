@@ -174,7 +174,11 @@ export function MatchesTable({ matches }: { matches: MatchRow[] }) {
                   <div className="flex items-center justify-end gap-1">
                     {m.job?.url && (
                       <a href={m.job.url} target="_blank" rel="noreferrer">
-                        <Button variant="ghost" size="icon" title="Ver oferta">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Ver en el sitio oficial de la empresa"
+                        >
                           <ExternalLink size={16} />
                         </Button>
                       </a>

@@ -33,7 +33,9 @@ export default async function DashboardPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Tus ofertas</h1>
         <p className="text-sm text-muted-foreground">
-          Solo las ofertas donde de verdad encajas. Calidad sobre cantidad.
+          Solo las ofertas donde de verdad encajas. Calidad sobre cantidad. El
+          enlace de cada oferta lleva al sitio oficial de "Trabaja con
+          nosotros" de la empresa — ahí confirmas la vacante vigente.
         </p>
       </div>
 
@@ -47,8 +49,8 @@ export default async function DashboardPage() {
               Empieza subiendo tu CV
             </h2>
             <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-              La IA leerá tu PDF y buscaremos las ofertas que mejor encajan
-              contigo. Es sencillo.
+              Leemos tu PDF y buscamos las ofertas que mejor encajan contigo.
+              Es sencillo.
             </p>
             <Link href="/app/cv" className="mt-6">
               <Button size="lg">Subir mi CV</Button>

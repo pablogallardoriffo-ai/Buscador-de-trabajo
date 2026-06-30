@@ -8,7 +8,7 @@ const features = [
   {
     icon: FileText,
     title: "Sube tu CV y listo",
-    desc: "La IA lee tu PDF y entiende tus competencias, estudios y experiencia. Sin formularios eternos.",
+    desc: "Leemos tu PDF y detectamos tus competencias, estudios y experiencia. Sin formularios eternos.",
   },
   {
     icon: Target,

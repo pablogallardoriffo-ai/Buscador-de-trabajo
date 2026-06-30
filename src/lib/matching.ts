@@ -12,6 +12,16 @@ export interface JobLike {
   region: string | null;
 }
 
+const REMOTE_WORDS = ["remoto", "remota", "teletrabajo", "home office"];
+
+/** Una oferta remota aplica a cualquier región: no se limita por zona. */
+export function isRemoteJob(job: JobLike): boolean {
+  const haystack = normalize(
+    [job.title, job.description, job.location].filter(Boolean).join(" ")
+  );
+  return REMOTE_WORDS.some((w) => haystack.includes(w));
+}
+
 export interface MatchResult {
   score: number; // 0-100
   matchedSkills: string[];
@@ -42,9 +52,9 @@ export function scoreJob(
 
   const total = Math.max(skills.length, 1);
   const coverage = m / total; // proporción del CV cubierta
-  const regionMatch = profileRegion
-    ? normalize(job.region ?? "") === normalize(profileRegion)
-    : false;
+  const regionMatch =
+    isRemoteJob(job) ||
+    (profileRegion ? normalize(job.region ?? "") === normalize(profileRegion) : false);
 
   let score =
     coverage * 55 + // qué parte de tu perfil aplica
