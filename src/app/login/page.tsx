@@ -23,39 +23,47 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const supabase = createClient();
 
-    if (mode === "signup") {
-      const res = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+    try {
+      if (mode === "signup") {
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          setError(body.error ?? "No se pudo crear la cuenta.");
+          return;
+        }
+      }
+
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      const body = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        setError(body.error ?? "No se pudo crear la cuenta.");
-        setLoading(false);
+
+      if (error) {
+        setError(
+          error.message.includes("Invalid login credentials")
+            ? "Correo o contraseña incorrectos."
+            : error.message
+        );
         return;
       }
-    }
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
+      router.push("/app");
+      router.refresh();
+    } catch (err) {
       setError(
-        error.message.includes("Invalid login credentials")
-          ? "Correo o contraseña incorrectos."
-          : error.message
+        err instanceof Error
+          ? `Error de configuración: ${err.message}`
+          : "Algo salió mal. Intenta de nuevo."
       );
+    } finally {
       setLoading(false);
-      return;
     }
-
-    router.push("/app");
-    router.refresh();
   }
 
   return (
