@@ -16,6 +16,7 @@ from config import (
     CV_PATH,
     CV_TEXT,
     MATCH_THRESHOLD,
+    MAX_SITES,
     TARGET_SITES,
     ANTHROPIC_API_KEY,
 )
@@ -47,9 +48,10 @@ def main() -> None:
     cv = cargar_cv()
     print(f"🤖 Bot iniciado. Umbral de match: {MATCH_THRESHOLD}%\n")
 
+    sites = TARGET_SITES[:MAX_SITES] if MAX_SITES > 0 else TARGET_SITES
     todas_las_ofertas: list[dict] = []
-    print("1) Extrayendo vacantes…")
-    for site in TARGET_SITES:
+    print(f"1) Extrayendo vacantes de {len(sites)} sitio(s)…")
+    for site in sites:
         try:
             todas_las_ofertas.extend(scrape_site(site["empresa"], site["url"]))
         except Exception as e:

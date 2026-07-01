@@ -24,23 +24,54 @@ scraper/
   .env            Tus claves (créalo desde .env.example)
 ```
 
-## Instalación
+## Instalación y primer uso
+
+Necesitas: **Python 3.11+** instalado y tu **API key de Claude**
+(console.anthropic.com → API Keys; ponle un tope de gasto bajo).
+
+### 🪟 Windows (PowerShell)
+
+```powershell
+cd scraper
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m playwright install chromium
+copy .env.example .env
+copy cv.example.txt cv.txt
+```
+
+### 🍎 macOS / Linux
 
 ```bash
 cd scraper
-python -m venv .venv && source .venv/bin/activate   # en Windows: .venv\Scripts\activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-playwright install chromium
-
-cp .env.example .env          # y completa ANTHROPIC_API_KEY
-cp cv.example.txt cv.txt      # y pega el texto de tu CV
+python -m playwright install chromium
+cp .env.example .env
+cp cv.example.txt cv.txt
 ```
 
-## Uso
+Luego, con un editor de texto:
+1. Abre **`.env`** y pega tu clave en `ANTHROPIC_API_KEY=...`
+   (deja `MAX_SITES=2` para la primera prueba rápida y barata).
+2. Abre **`cv.txt`** y pega el texto de tu CV.
+
+### Ejecutar
 
 ```bash
 python main.py
 ```
+
+Verás en pantalla las vacantes encontradas y los match. Al terminar se genera
+**`ofertas_match.xlsx`**. Cuando la prueba te convenza, pon `MAX_SITES=0` en
+`.env` para revisar todos los sitios.
+
+### (Opcional) Que aparezcan también en tu panel web
+
+En `.env`, completa `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Settings → API) y
+`TARGET_USER_EMAIL` con tu correo. Así las ofertas se suben a tu panel de
+Es Sencillo además del Excel.
 
 El bot:
 1. Recorre las empresas de `config.py` (`TARGET_SITES`) — agrega/quita las que quieras.

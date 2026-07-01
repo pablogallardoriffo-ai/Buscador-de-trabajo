@@ -8,6 +8,10 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 CLAUDE_MODEL = os.getenv("CLAUDE_MODEL", "claude-haiku-4-5")
 MATCH_THRESHOLD = int(os.getenv("MATCH_THRESHOLD", "75"))
 
+# Para una primera prueba rápida/barata: revisa solo los primeros N sitios.
+# Déjalo en 0 para revisar todos.
+MAX_SITES = int(os.getenv("MAX_SITES", "0"))
+
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
 TARGET_USER_EMAIL = os.getenv("TARGET_USER_EMAIL", "")
