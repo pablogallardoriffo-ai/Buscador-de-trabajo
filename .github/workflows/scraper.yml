@@ -1,0 +1,44 @@
+name: Bot de ofertas (scraper)
+
+# Corre solo cada día a las 12:00 UTC (~09:00 en Chile) y también a demanda.
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+jobs:
+  buscar-ofertas:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scraper
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Ejecutar el bot
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: claude-haiku-4-5
+          MATCH_THRESHOLD: "75"
+          SUPABASE_URL: https://tnntcngconuhyzfavibz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TARGET_USER_EMAIL: pablogallardoriffo@gmail.com
+          CV_TEXT: ${{ secrets.CV_TEXT }}
+        run: python main.py
+
+      - name: Guardar el Excel como resultado descargable
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ofertas-match
+          path: scraper/ofertas_match.xlsx
+          if-no-files-found: ignore

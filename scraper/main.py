@@ -12,16 +12,26 @@ Uso:
 """
 import os
 import sys
-from config import CV_PATH, MATCH_THRESHOLD, TARGET_SITES, ANTHROPIC_API_KEY
+from config import (
+    CV_PATH,
+    CV_TEXT,
+    MATCH_THRESHOLD,
+    TARGET_SITES,
+    ANTHROPIC_API_KEY,
+)
 from scraper import scrape_site
 from matcher import evaluar_match
 from sink import export_excel, push_to_platform
 
 
 def cargar_cv() -> str:
+    # 1) Variable de entorno CV_TEXT (para la ejecución automática en CI).
+    if CV_TEXT.strip():
+        return CV_TEXT.strip()
+    # 2) Archivo cv.txt (para uso local).
     if not os.path.exists(CV_PATH):
         sys.exit(
-            f"Falta tu CV en {CV_PATH}. Exporta tu CV a texto y guárdalo ahí."
+            f"Falta tu CV: define CV_TEXT o crea {CV_PATH} con el texto de tu CV."
         )
     with open(CV_PATH, encoding="utf-8") as f:
         cv = f.read().strip()

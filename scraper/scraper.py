@@ -86,9 +86,11 @@ def scrape_site(empresa: str, url: str) -> list[dict]:
         cargo = (o.get("cargo") or "").strip()
         if not cargo:
             continue
+        # En portales agregadores, la empresa viene por aviso; si no, la del sitio.
+        empresa_oferta = (o.get("empresa") or "").strip() or empresa
         ofertas.append(
             {
-                "empresa": empresa,
+                "empresa": empresa_oferta[:120],
                 "cargo": cargo[:200],
                 "descripcion": (o.get("descripcion") or "").strip()[:400],
                 "link": (o.get("link") or url).strip(),

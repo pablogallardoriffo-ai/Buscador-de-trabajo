@@ -12,6 +12,7 @@ válido con esta forma exacta:
 {
   "ofertas": [
     {
+      "empresa": "Nombre de la empresa que publica (si la página es de una sola empresa, repítela; en portales que agregan varias, toma la de cada aviso)",
       "cargo": "Título del cargo",
       "descripcion": "Resumen de funciones/requisitos si aparece (máx 400 caracteres)",
       "link": "URL directa a esa oferta (elige de la lista de enlaces la que corresponda; si no hay una específica, usa la URL de la página)"
