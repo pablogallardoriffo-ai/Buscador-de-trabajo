@@ -32,18 +32,26 @@ EXCEL_PATH = os.path.join(os.path.dirname(__file__), "ofertas_match.xlsx")
 # plataformas (trabajando.cl, Pandapé/Computrabajo, AIRA...). Apuntar a esas
 # páginas de listado cubre muchas empresas de forma más estable.
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# SOLO páginas OFICIALES de empresas ("Trabaja con nosotros" / portal propio
+# de la empresa). NADA de agregadores tipo Computrabajo/Indeed.
+# Agrega todas las empresas que quieras seguir (Chile e internacionales).
+# ---------------------------------------------------------------------------
 TARGET_SITES = [
-    # --- Portales que AGREGAN muchas empresas (mayor cobertura por URL) ---
-    # Cada búsqueda lista decenas de avisos de empresas distintas con link
-    # directo. Ajusta las palabras/comuna a tu perfil.
-    {"empresa": "Portal Computrabajo", "url": "https://cl.computrabajo.com/trabajo-de-ingeniero-industrial"},
-    {"empresa": "Portal Computrabajo", "url": "https://cl.computrabajo.com/trabajo-de-administracion"},
-    {"empresa": "Portal Computrabajo", "url": "https://cl.computrabajo.com/trabajo-de-logistica-en-valparaiso"},
-
-    # --- Empresas puntuales ("Trabaja con nosotros") ---
+    # --- Chile ---
     {"empresa": "Falabella", "url": "http://www.trabajos.falabella.cl/falabella/ofertas-laborales"},
-    {"empresa": "Cencosud", "url": "https://cencosud.trabajando.cl/trabajo-empleo"},
-    {"empresa": "Walmart Chile", "url": "https://walmart.trabajando.cl/trabajo-empleo"},
-    {"empresa": "BancoEstado", "url": "https://bancoestado.trabajando.cl/trabajo-empleo"},
-    {"empresa": "Chilexpress", "url": "https://chilexpress.trabajando.cl/trabajo-empleo"},
+    {"empresa": "Cencosud", "url": "https://empleos.cencosud.com/"},
+    {"empresa": "Walmart Chile", "url": "https://odin.trabajaenwalmart.cl/trabaja-con-nosotros-en-nuestros-supermercados"},
+    {"empresa": "Codelco", "url": "https://www.codelco.com/trabaja-en-codelco"},
+    {"empresa": "Komatsu Cummins", "url": "https://www.komatsucummins.cl/trabaja-con-nosotros/"},
+    {"empresa": "BancoEstado", "url": "https://bancoestado.trabajando.cl/"},
+    {"empresa": "Chilexpress", "url": "https://chilexpress.trabajando.cl/"},
+    {"empresa": "Sodexo Chile", "url": "https://cl.sodexo.com/trabaja-con-nosotros/"},
+    {"empresa": "Clínica Alemana", "url": "https://trabajos.alemana.cl/"},
+    {"empresa": "Betterfly", "url": "https://careers.betterfly.com/"},
+
+    # --- Internacionales / remoto (ejemplos; agrega/quita a tu gusto) ---
+    # {"empresa": "Mercado Libre", "url": "https://careers.mercadolibre.com/"},
+    # {"empresa": "Globant", "url": "https://www.globant.com/careers"},
+    # {"empresa": "NotCo", "url": "https://notco.com/cl/sobre/notco-squad"},
 ]
