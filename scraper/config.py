@@ -38,7 +38,9 @@ EXCEL_PATH = os.path.join(os.path.dirname(__file__), "ofertas_match.xlsx")
 # Agrega todas las empresas que quieras seguir (Chile e internacionales).
 # ---------------------------------------------------------------------------
 TARGET_SITES = [
-    # --- Chile ---
+    # =====================================================================
+    # CHILE — páginas oficiales "Trabaja con nosotros"
+    # =====================================================================
     {"empresa": "Falabella", "url": "http://www.trabajos.falabella.cl/falabella/ofertas-laborales"},
     {"empresa": "Cencosud", "url": "https://empleos.cencosud.com/"},
     {"empresa": "Walmart Chile", "url": "https://odin.trabajaenwalmart.cl/trabaja-con-nosotros-en-nuestros-supermercados"},
@@ -50,8 +52,19 @@ TARGET_SITES = [
     {"empresa": "Clínica Alemana", "url": "https://trabajos.alemana.cl/"},
     {"empresa": "Betterfly", "url": "https://careers.betterfly.com/"},
 
-    # --- Internacionales / remoto (ejemplos; agrega/quita a tu gusto) ---
-    # {"empresa": "Mercado Libre", "url": "https://careers.mercadolibre.com/"},
-    # {"empresa": "Globant", "url": "https://www.globant.com/careers"},
-    # {"empresa": "NotCo", "url": "https://notco.com/cl/sobre/notco-squad"},
+    # =====================================================================
+    # LATAM — empresas grandes con roles de Proyectos / Datos / BI / Automatización
+    # (páginas de carreras oficiales; muchas ofrecen posiciones remotas)
+    # =====================================================================
+    {"empresa": "Mercado Libre", "url": "https://careers-meli.mercadolibre.com/en"},
+    {"empresa": "Globant", "url": "https://career.globant.com/"},
+    {"empresa": "LATAM Airlines", "url": "https://www.latamairlines.com/cl/es/trabaja-con-nosotros"},
+
+    # =====================================================================
+    # US / EUROPA — remoto global (Gestión de Proyectos, Datos, Automatización)
+    # Empresas 100% remotas: publican cargos abiertos a Latinoamérica.
+    # =====================================================================
+    {"empresa": "GitLab", "url": "https://about.gitlab.com/jobs/all-jobs/"},
+    {"empresa": "Zapier", "url": "https://zapier.com/jobs"},
+    {"empresa": "Automattic", "url": "https://automattic.com/work-with-us/"},
 ]
