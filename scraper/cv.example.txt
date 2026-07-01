@@ -1,0 +1,6 @@
+PEGA AQUÍ EL TEXTO DE TU CV.
+
+Exporta tu currículum a texto plano (puedes copiar/pegar desde el PDF o Word)
+y reemplaza estas líneas por su contenido: formación, experiencia, competencias
+técnicas (Excel/VBA, Power BI, bases de datos, automatización, gestión de
+proyectos), idiomas, etc. Mientras más completo, mejor será el match.
