@@ -3,6 +3,7 @@ import { FileText, Target, MessageSquareText } from "lucide-react";
 import { Logo } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const features = [
   {
@@ -28,6 +29,7 @@ export default function Home() {
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-5">
         <Logo />
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Link href="/login">
             <Button variant="ghost" size="sm">
               Entrar

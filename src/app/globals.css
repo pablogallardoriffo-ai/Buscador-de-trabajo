@@ -33,6 +33,33 @@
   --radius: 0.75rem;
 }
 
+/* Modo oscuro (activado con la clase .dark en <html>) */
+.dark {
+  --background: #1a1d1c; /* verde-gris muy oscuro, cálido */
+  --foreground: #e7e9e6;
+
+  --card: #232725;
+  --card-foreground: #e7e9e6;
+
+  --muted: #2b302e;
+  --muted-foreground: #9aa19c;
+
+  --primary: #5fa08f; /* salvia más luminosa para contraste en oscuro */
+  --primary-foreground: #10221d;
+  --primary-soft: #253430;
+
+  --accent: #d6a15a;
+  --accent-foreground: #21160a;
+
+  --success: #6bbd7c;
+  --warning: #d6a15a;
+  --danger: #e0836b;
+
+  --border: #333937;
+  --input: #333937;
+  --ring: #5fa08f;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

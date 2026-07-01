@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { QrButton } from "@/components/qr-button";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
@@ -41,6 +42,10 @@ function scoreBadge(score: number) {
   if (score >= 70) return "success" as const;
   if (score >= 45) return "default" as const;
   return "warning" as const;
+}
+
+function salaryText(salary: string | null): string {
+  return salary && salary.trim() ? salary : "No especificado";
 }
 
 /** Botón para recalcular los matches (sin IA). */
@@ -94,10 +99,56 @@ export function MatchesTable({ matches }: { matches: MatchRow[] }) {
     return m.status === filter;
   });
 
+  function Actions({ m }: { m: MatchRow }) {
+    return (
+      <div className="flex items-center gap-1">
+        {m.job?.url && <QrButton url={m.job.url} title={m.job.title} />}
+        {m.job?.url && (
+          <a href={m.job.url} target="_blank" rel="noreferrer">
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Ver la oferta en el sitio oficial"
+            >
+              <ExternalLink size={16} />
+            </Button>
+          </a>
+        )}
+        <Button
+          variant="ghost"
+          size="icon"
+          title="Guardar"
+          disabled={busy === m.id}
+          onClick={() => setStatus(m.id, "guardada")}
+        >
+          <Bookmark size={16} />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          title="Marcar como postulada"
+          disabled={busy === m.id}
+          onClick={() => setStatus(m.id, "postulada")}
+        >
+          <Check size={16} />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          title="Descartar"
+          disabled={busy === m.id}
+          onClick={() => setStatus(m.id, "descartada")}
+        >
+          <X size={16} />
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {FILTERS.map((f) => (
             <button
               key={f.key}
@@ -116,107 +167,92 @@ export function MatchesTable({ matches }: { matches: MatchRow[] }) {
         <RematchButton label="Actualizar ofertas" />
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-border bg-card">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-border bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
-              <th className="px-4 py-3 font-medium">Empresa</th>
-              <th className="px-4 py-3 font-medium">Cargo</th>
-              <th className="hidden px-4 py-3 font-medium md:table-cell">
-                Ubicación
-              </th>
-              <th className="px-4 py-3 font-medium">Match</th>
-              <th className="hidden px-4 py-3 font-medium sm:table-cell">
-                Estado
-              </th>
-              <th className="px-4 py-3 text-right font-medium">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visible.length === 0 && (
-              <tr>
-                <td
-                  colSpan={6}
-                  className="px-4 py-10 text-center text-muted-foreground"
-                >
-                  No hay ofertas en esta vista.
-                </td>
-              </tr>
-            )}
+      {visible.length === 0 ? (
+        <div className="rounded-lg border border-border bg-card px-4 py-10 text-center text-sm text-muted-foreground">
+          No hay ofertas en esta vista.
+        </div>
+      ) : (
+        <>
+          {/* Móvil: tarjetas */}
+          <div className="space-y-3 md:hidden">
             {visible.map((m) => (
-              <tr
+              <div
                 key={m.id}
-                className="border-b border-border last:border-0 hover:bg-muted/30"
+                className="rounded-lg border border-border bg-card p-4"
               >
-                <td className="px-4 py-3 font-medium">
-                  {m.job?.company_name ?? "—"}
-                </td>
-                <td className="px-4 py-3">
-                  {m.job?.title ?? "—"}
-                  {m.job?.salary && (
-                    <span className="block text-xs text-muted-foreground">
-                      {m.job.salary}
-                    </span>
-                  )}
-                </td>
-                <td className="hidden px-4 py-3 text-muted-foreground md:table-cell">
-                  {m.job?.location ?? m.job?.region ?? "—"}
-                </td>
-                <td className="px-4 py-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-medium">{m.job?.company_name ?? "—"}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {m.job?.title ?? "—"}
+                    </p>
+                  </div>
                   <Badge variant={scoreBadge(m.score)}>{m.score}%</Badge>
-                </td>
-                <td className="hidden px-4 py-3 sm:table-cell">
+                </div>
+                <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+                  <p>📍 {m.job?.location ?? m.job?.region ?? "—"}</p>
+                  <p>💰 {salaryText(m.job?.salary ?? null)}</p>
+                </div>
+                <div className="mt-3 flex items-center justify-between">
                   <Badge variant="neutral">
                     {STATUS_LABEL[m.status] ?? m.status}
                   </Badge>
-                </td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center justify-end gap-1">
-                    {m.job?.url && (
-                      <a href={m.job.url} target="_blank" rel="noreferrer">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          title="Ver en el sitio oficial de la empresa"
-                        >
-                          <ExternalLink size={16} />
-                        </Button>
-                      </a>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      title="Guardar"
-                      disabled={busy === m.id}
-                      onClick={() => setStatus(m.id, "guardada")}
-                    >
-                      <Bookmark size={16} />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      title="Marcar como postulada"
-                      disabled={busy === m.id}
-                      onClick={() => setStatus(m.id, "postulada")}
-                    >
-                      <Check size={16} />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      title="Descartar"
-                      disabled={busy === m.id}
-                      onClick={() => setStatus(m.id, "descartada")}
-                    >
-                      <X size={16} />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
+                  <Actions m={m} />
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
+
+          {/* Escritorio: tabla */}
+          <div className="hidden overflow-hidden rounded-lg border border-border bg-card md:block">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+                  <th className="px-4 py-3 font-medium">Empresa</th>
+                  <th className="px-4 py-3 font-medium">Cargo</th>
+                  <th className="px-4 py-3 font-medium">Ubicación</th>
+                  <th className="px-4 py-3 font-medium">Sueldo</th>
+                  <th className="px-4 py-3 font-medium">Match</th>
+                  <th className="px-4 py-3 font-medium">Estado</th>
+                  <th className="px-4 py-3 text-right font-medium">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((m) => (
+                  <tr
+                    key={m.id}
+                    className="border-b border-border last:border-0 hover:bg-muted/30"
+                  >
+                    <td className="px-4 py-3 font-medium">
+                      {m.job?.company_name ?? "—"}
+                    </td>
+                    <td className="px-4 py-3">{m.job?.title ?? "—"}</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {m.job?.location ?? m.job?.region ?? "—"}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {salaryText(m.job?.salary ?? null)}
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge variant={scoreBadge(m.score)}>{m.score}%</Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge variant="neutral">
+                        {STATUS_LABEL[m.status] ?? m.status}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end">
+                        <Actions m={m} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }
