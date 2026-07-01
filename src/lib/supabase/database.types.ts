@@ -146,11 +146,13 @@ export type Database = {
       }
       jobs: {
         Row: {
+          category: string | null
           company_name: string | null
           created_at: string
           description: string | null
           embedding: string | null
           id: string
+          is_national: boolean
           location: string | null
           posted_at: string | null
           raw: Json | null
@@ -162,11 +164,13 @@ export type Database = {
           url: string | null
         }
         Insert: {
+          category?: string | null
           company_name?: string | null
           created_at?: string
           description?: string | null
           embedding?: string | null
           id?: string
+          is_national?: boolean
           location?: string | null
           posted_at?: string | null
           raw?: Json | null
@@ -178,11 +182,13 @@ export type Database = {
           url?: string | null
         }
         Update: {
+          category?: string | null
           company_name?: string | null
           created_at?: string
           description?: string | null
           embedding?: string | null
           id?: string
+          is_national?: boolean
           location?: string | null
           posted_at?: string | null
           raw?: Json | null

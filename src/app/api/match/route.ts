@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { scoreJob } from "@/lib/matching";
+import { scoreJob, type Candidate } from "@/lib/matching";
+import { inferCategories } from "@/lib/categories";
+
+type EducationItem = { degree?: string; field?: string; institution?: string };
+type ExperienceItem = { role?: string; company?: string; description?: string };
 
 /** Calcula los matches del usuario contra las ofertas disponibles. Sin IA. */
 export async function POST() {
@@ -12,7 +16,7 @@ export async function POST() {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  // CV activo + competencias detectadas.
+  // CV activo + datos detectados.
   const { data: cv } = await supabase
     .from("cvs")
     .select("id")
@@ -26,7 +30,7 @@ export async function POST() {
 
   const { data: cvData } = await supabase
     .from("cv_data")
-    .select("skills")
+    .select("skills, full_name, headline, summary, desired_role, seniority, education, experience")
     .eq("cv_id", cv.id)
     .maybeSingle();
 
@@ -41,9 +45,32 @@ export async function POST() {
     .eq("id", user.id)
     .maybeSingle();
 
+  // Perfil del candidato: competencias + rubros inferidos de todo el CV.
+  const education = (cvData?.education as EducationItem[] | null) ?? [];
+  const experience = (cvData?.experience as ExperienceItem[] | null) ?? [];
+  const profileText = [
+    skills.join(" "),
+    cvData?.full_name,
+    cvData?.headline,
+    cvData?.summary,
+    cvData?.desired_role,
+    ...education.map((e) => `${e.degree ?? ""} ${e.field ?? ""}`),
+    ...experience.map((e) => `${e.role ?? ""} ${e.description ?? ""}`),
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const candidate: Candidate = {
+    skills,
+    categories: inferCategories(profileText),
+    region: profile?.region ?? null,
+  };
+
   const { data: jobs } = await supabase
     .from("jobs")
-    .select("id, title, description, company_name, location, region");
+    .select(
+      "id, title, description, company_name, location, region, category, is_national"
+    );
 
   const rows: {
     user_id: string;
@@ -54,7 +81,7 @@ export async function POST() {
   }[] = [];
 
   for (const job of jobs ?? []) {
-    const result = scoreJob(skills, profile?.region ?? null, job);
+    const result = scoreJob(candidate, job);
     if (result) {
       rows.push({
         user_id: user.id,
@@ -66,9 +93,17 @@ export async function POST() {
     }
   }
 
-  // Upsert sin tocar el estado (no incluimos 'status', así se conserva
-  // el que el usuario haya fijado; en altas usa el valor por defecto).
+  // Recalcula limpio: elimina los matches "nueva" previos (conserva los que
+  // el usuario haya guardado/postulado/descartado), luego inserta los nuevos.
+  await supabase
+    .from("matches")
+    .delete()
+    .eq("user_id", user.id)
+    .eq("status", "nueva");
+
   if (rows.length > 0) {
+    // upsert sin 'status': en altas usa el valor por defecto ('nueva'); en
+    // los que el usuario ya movió, solo actualiza score y competencias.
     const { error } = await supabase
       .from("matches")
       .upsert(rows, { onConflict: "user_id,job_id" });
