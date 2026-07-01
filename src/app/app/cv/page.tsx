@@ -2,6 +2,7 @@ import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CvUploader } from "@/components/cv-uploader";
+import { SkillsEditor } from "@/components/skills-editor";
 import { createClient } from "@/lib/supabase/server";
 import type { ParsedCv } from "@/lib/anthropic";
 
@@ -75,16 +76,14 @@ export default async function CvPage() {
               {data.seniority && <span>📈 {data.seniority}</span>}
             </div>
 
-            {data.skills?.length > 0 && (
-              <div>
-                <h3 className="mb-2 text-sm font-semibold">Competencias</h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {data.skills.map((s) => (
-                    <Badge key={s}>{s}</Badge>
-                  ))}
-                </div>
-              </div>
-            )}
+            <div>
+              <h3 className="mb-1 text-sm font-semibold">Competencias</h3>
+              <p className="mb-3 text-xs text-muted-foreground">
+                Corrige lo que falte: agrega o quita competencias y actualiza
+                tus ofertas. Mientras mejor reflejen tu perfil, mejor el match.
+              </p>
+              <SkillsEditor cvId={cv!.id} initialSkills={data.skills ?? []} />
+            </div>
 
             {data.experience?.length > 0 && (
               <div>
