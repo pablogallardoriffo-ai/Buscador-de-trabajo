@@ -29,8 +29,11 @@ Diferenciador: solo mostramos ofertas con match real (calidad > cantidad).
   - Tabla con columnas: empresa, cargo, ubicación, % match, estado, link
   - Filtros y estados (nueva / guardada / postulada / descartada)
 
-- [ ] **Fase 5 — Consejos + carta de presentación**
-  - Generación bajo demanda con Claude → `application_kits`
+- [x] **Fase 5 — Consejos + carta de presentación**
+  - Generación bajo demanda con Claude (Sonnet) → `application_kits`
+  - Página de detalle por oferta (`/app/oferta/[matchId]`) con consejos,
+    carta con botón de copiar y regeneración
+  - Alternativa sin tokens (plantilla) cuando no hay `ANTHROPIC_API_KEY`
 
 - [ ] **Fase 6 — Pulido, seguridad y deploy**
   - Borrado total de datos (Ley 19.628), revisión de advisors, deploy en Vercel

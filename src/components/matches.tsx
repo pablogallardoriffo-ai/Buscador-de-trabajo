@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   RefreshCw,
@@ -9,6 +10,7 @@ import {
   Check,
   X,
   Loader2,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -102,6 +104,15 @@ export function MatchesTable({ matches }: { matches: MatchRow[] }) {
   function Actions({ m }: { m: MatchRow }) {
     return (
       <div className="flex items-center gap-1">
+        <Link href={`/app/oferta/${m.id}`}>
+          <Button
+            variant="ghost"
+            size="icon"
+            title="Preparar postulación: consejos y carta con IA"
+          >
+            <Sparkles size={16} />
+          </Button>
+        </Link>
         {m.job?.url && <QrButton url={m.job.url} title={m.job.title} />}
         {m.job?.url && (
           <a href={m.job.url} target="_blank" rel="noreferrer">

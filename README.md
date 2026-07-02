@@ -41,6 +41,7 @@ src/
     auth/               Callback y cierre de sesión
     app/                Panel privado (CRM)
       page.tsx          Ofertas (dashboard)
+      oferta/[matchId]/ Detalle de la oferta + consejos y carta con IA
       cv/               Subir y ver el CV
       perfil/           Datos de cuenta y zona
   components/           UI (botones, tarjetas, sidebar, marca)
@@ -56,4 +57,7 @@ compartidas y solo el backend (service role) las escribe.
 
 ## Hoja de ruta
 
-Ver [PLAN.md](./PLAN.md). Estado actual: **Fase 0 completada** (base, auth y diseño).
+Ver [PLAN.md](./PLAN.md). Estado actual: **Fase 5 completada** — subir CV con
+análisis IA, matching, dashboard CRM y kit de postulación (consejos + carta de
+presentación) por oferta. Falta la fuente definitiva de ofertas (Fase 2) y el
+pulido final + deploy (Fase 6).
